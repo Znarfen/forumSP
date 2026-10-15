@@ -24,8 +24,17 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
 
+                    // users
                     .requestMatchers(HttpMethod.POST, "/register").permitAll()
                     .requestMatchers(HttpMethod.GET, "/users").fullyAuthenticated()
+
+                    // spaces
+                    .requestMatchers(HttpMethod.POST, "/addSpace").fullyAuthenticated()
+                    .requestMatchers(HttpMethod.POST, "/{spaceName}/addPost").fullyAuthenticated()
+                    .requestMatchers(HttpMethod.GET, "/getAllSpaces").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/getAllSpaces/names").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/{spaceName}/getPosts").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/{spaceName}").permitAll()
 
                 .anyRequest().authenticated()
             )

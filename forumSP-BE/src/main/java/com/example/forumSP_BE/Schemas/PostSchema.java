@@ -23,6 +23,9 @@ public class PostSchema {
     @NotBlank (message = "Author is required")
     private String author;
 
+    @NotBlank (message = "Post must belong to a space")
+    private String space;
+
     public PostSchema() {}
 
     public PostSchema(String title, String content, String author) {
@@ -35,8 +38,10 @@ public class PostSchema {
     public String getTitle() {return title;}
     public String getContent() {return content;}
     public String getAuthor() {return author;}
+    public String getBelonging() {return space;}
 
     public void setTitle(String title) {this.title = title;}
     public void setContent(String content) {this.content = content;}
     public void setAuthor(String author) {this.author = author;}
+    public void setBelonging(String space) {this.space = space;}
 }

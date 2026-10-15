@@ -9,8 +9,6 @@ import com.example.forumSP_BE.Repositories.UserRepository;
 import com.example.forumSP_BE.Schemas.UserSchema;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

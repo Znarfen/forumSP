@@ -1,10 +1,14 @@
 package com.example.forumSP_BE.Schemas;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
@@ -30,7 +34,7 @@ public class SpaceSchema {
     private String[] moderators;
 
     @Transient
-    private PostSchema[] posts;
+    private List<PostSchema> posts;
 
     public SpaceSchema() {}
 
@@ -40,13 +44,14 @@ public class SpaceSchema {
     public String getOwner() {return owner;}
     public String[] getMembers() {return members;}
     public String[] getModerators() {return moderators;}
-    public PostSchema[] getPosts() {return posts;}
+    public List<PostSchema> getPosts() {return posts;}
     
 
     public void setName(String name) {this.name = name;}
     public void setDescription(String description) {this.description = description;}
-    public void setPosts(PostSchema[] posts) {this.posts = posts;}
+    public void setPosts(List<PostSchema> posts) {this.posts = posts;}
     public void setOwner(String owner) {this.owner = owner;}
     public void setMembers(String[] members) {this.members = members;}
     public void setModerators(String[] moderators) {this.moderators = moderators;}
+    public void addPost(PostSchema post) {this.posts.add(post);}
 }

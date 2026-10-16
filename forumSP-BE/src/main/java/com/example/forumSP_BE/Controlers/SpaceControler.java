@@ -35,12 +35,12 @@ public class SpaceControler {
         if (body.get("title") == null || body.get("content") == null) {
             return ResponseEntity.badRequest().body("Missing required fields: title and/or content");
         }
-        return spaceService.createPostInSpace(spaceName, new PostSchema(body.get("title").asString(), body.get("content").asString(), principal.getName()), principal.getName());
+        return spaceService.createPost(body.get("title").asString(), body.get("content").asString(), principal.getName(), spaceName);
     }
 
     @GetMapping("/getAllSpaces")
     public Iterable<com.example.forumSP_BE.Schemas.SpaceSchema> getAllSpaces() {
-        return spaceService.getSpaces();
+        return spaceService.getSpace();
     }
 
     @GetMapping ("/getAllSpaces/names")
@@ -50,7 +50,7 @@ public class SpaceControler {
 
     @GetMapping("/{spaceName}/getPosts")
     public ResponseEntity getPosts(@PathVariable String spaceName) {
-        return spaceService.getPostsInSpace(spaceName);
+        return spaceService.getPosts(spaceName);
     }
 
     @GetMapping ("/{spaceName}")

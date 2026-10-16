@@ -18,7 +18,7 @@ import jakarta.validation.constraints.NotBlank;
 public class SpaceSchema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotBlank(message = "Name is mandatory")
     @Column(unique = true, nullable = false)
@@ -33,25 +33,28 @@ public class SpaceSchema {
 
     private String[] moderators;
 
-    @Transient
-    private List<PostSchema> posts;
+    private int[] postsId = {};
 
     public SpaceSchema() {}
 
-    public Long getId() {return id;}
+    public int getId() {return id;}
     public String getName() {return name;}
     public String getDescription() {return description;}
     public String getOwner() {return owner;}
     public String[] getMembers() {return members;}
     public String[] getModerators() {return moderators;}
-    public List<PostSchema> getPosts() {return posts;}
+    public int[] getPosts() {return postsId;}
     
 
     public void setName(String name) {this.name = name;}
     public void setDescription(String description) {this.description = description;}
-    public void setPosts(List<PostSchema> posts) {this.posts = posts;}
     public void setOwner(String owner) {this.owner = owner;}
     public void setMembers(String[] members) {this.members = members;}
     public void setModerators(String[] moderators) {this.moderators = moderators;}
-    public void addPost(PostSchema post) {this.posts.add(post);}
+    public void addPost(int id) {
+        int[] newPosts = new int[this.postsId.length + 1];
+        newPosts[0] = id;
+        for (int i = 0; i < this.postsId.length; i++) newPosts[i + 1] = this.postsId[i];
+        this.postsId = newPosts;
+    }
 }

@@ -23,6 +23,10 @@ public class UserSchema {
     @NotBlank(message = "Password is required")
     private String password;
 
+    private int[] likedPosts = {};
+    
+    private int[] dislikedPosts = {};
+
     /*  Might implement later
 
     @Pattern(regexp = "^(USER|ADMIN)$", message = "Role must be either 'USER', 'ADMIN'.")
@@ -34,7 +38,27 @@ public class UserSchema {
     public Long getId() {return id;}
     public String getName() {return name;}
     public String getPassword() {return password;}
+    public int[] getLikedPosts() {return likedPosts;}
+    public int[] getDislikedPosts() {return dislikedPosts;}
 
     public void setName(String name) {this.name = name;}
     public void setPassword(String password) {this.password = password;}
+    
+    /** If like is true, will result in a like. If like is false, will result in a dislake.  */
+    public void addVote(int postId, boolean like) {
+        int[] curentPosts;
+        if (like) curentPosts = this.likedPosts;
+        else curentPosts = this.dislikedPosts;
+
+        int[] newPosts = new int[curentPosts.length + 1];
+        newPosts[0] = postId;
+        for (int i = 0; i < curentPosts.length; i++) newPosts[i + 1] = curentPosts[i];
+        
+        if (like) this.likedPosts = newPosts;
+        else this.dislikedPosts = newPosts;
+    }
+    /** Add a post ass a liked posts. */
+    public void addVote(int postId) {addVote(postId, true);}
+
+    /**  */
 }

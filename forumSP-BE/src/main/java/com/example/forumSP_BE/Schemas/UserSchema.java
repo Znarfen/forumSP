@@ -1,5 +1,7 @@
 package com.example.forumSP_BE.Schemas;
 
+import java.util.function.BiFunction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,7 +46,7 @@ public class UserSchema {
     public void setName(String name) {this.name = name;}
     public void setPassword(String password) {this.password = password;}
     
-    /** If like is true, will result in a like. If like is false, will result in a dislake.  */
+    /** If like is set to true, will result in a like. If like is false, will result in a dislake.  */
     public void addVote(int postId, boolean like) {
         int[] curentPosts;
         if (like) curentPosts = this.likedPosts;
@@ -60,5 +62,31 @@ public class UserSchema {
     /** Add a post ass a liked posts. */
     public void addVote(int postId) {addVote(postId, true);}
 
-    /**  */
+    /** Remove vote. Returns a boo, true indicades succes. */
+    public boolean removeVote(int postId) {
+
+        boolean liked = checkVote(postId, true);
+        if (liked == false && checkVote(postId, false) == false) return false;
+
+        int[] votes =  liked ? this.likedPosts : this.dislikedPosts;
+        int[] newVotes = new int[votes.length - 1];
+        boolean found = false;
+
+        for (int pos = 0; pos < votes.length; pos++) {
+            if (votes[pos] == postId) found = true;
+            newVotes[pos] = votes[found ? pos+1 : pos];
+        }
+        if (!found) return false;
+
+        if (liked) this.likedPosts = newVotes;
+        else this.dislikedPosts = newVotes;
+
+        return true;
+    }
+
+    /** Check if vote exists. If like is set to true then it will go on liked posts otherwise it will go on dislikes. */
+    private boolean checkVote(int postId, boolean like) {
+        for (int post : like ? this.likedPosts : this.dislikedPosts) if (post == postId) return true;
+        return false;
+    }
 }

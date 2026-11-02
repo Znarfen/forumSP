@@ -27,7 +27,15 @@ public class SpaceControler {
         if (body.get("name") == null || body.get("description") == null) {
             return ResponseEntity.badRequest().body("Missing required fields: name and/or description");
         }
-        return spaceService.createSpace(body.get("name").asString(), body.get("description").asString(), principal.getName());
+        JsonNode tagsNode = body.get("tags");
+        String[] tags = null;
+        if (tagsNode != null && tagsNode.isArray()) {
+            tags = new String[tagsNode.size()];
+            for (int i = 0; i < tagsNode.size(); i++) {
+                tags[i] = tagsNode.get(i).asString();
+            }
+        }
+        return spaceService.createSpace(body.get("name").asString(), body.get("description").asString(), tags, principal.getName());
     }
 
     @PostMapping("/{spaceName}/addPost")
@@ -56,6 +64,11 @@ public class SpaceControler {
     @GetMapping ("/{spaceName}")
     public com.example.forumSP_BE.Schemas.SpaceSchema getSpace(@PathVariable String spaceName) {
         return spaceService.getSpace(spaceName);
+    }
+
+    @GetMapping ("/getSuggestedSpaces")
+    public ResponseEntity getSuggestedSpaces(@RequestBody JsonNode body) {
+        return spaceService.getMatchingSpaces(body.get("description").asString());
     }
 
 }

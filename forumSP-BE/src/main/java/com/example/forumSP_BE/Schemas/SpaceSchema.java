@@ -35,22 +35,32 @@ public class SpaceSchema {
 
     private int[] postsId = {};
 
+    // Normal tags for filtering
+    private String[] tags;
+
+    // Super tag for filtering
+    private String sTag;
+
     public SpaceSchema() {}
 
-    public int getId() {return id;}
-    public String getName() {return name;}
-    public String getDescription() {return description;}
-    public String getOwner() {return owner;}
-    public String[] getMembers() {return members;}
-    public String[] getModerators() {return moderators;}
-    public int[] getPosts() {return postsId;}
+    public int getId() {return this.id;}
+    public String getName() {return this.name;}
+    public String getDescription() {return this.description;}
+    public String getOwner() {return this.owner;}
+    public String[] getMembers() {return this.members;}
+    public String[] getModerators() {return this.moderators;}
+    public int[] getPosts() {return this.postsId;}
+    public String[] getTags() {return this.tags;}
+    public String getSuperTag() {return this.sTag;}
     
-
     public void setName(String name) {this.name = name;}
     public void setDescription(String description) {this.description = description;}
     public void setOwner(String owner) {this.owner = owner;}
     public void setMembers(String[] members) {this.members = members;}
     public void setModerators(String[] moderators) {this.moderators = moderators;}
+    public void setTags(String[] tags) {this.tags = tags;}
+    public void setSuperTag(String sTag) {this.sTag = sTag;}
+
     public void addPost(int id) {
         int[] newPosts = new int[this.postsId.length + 1];
         newPosts[0] = id;

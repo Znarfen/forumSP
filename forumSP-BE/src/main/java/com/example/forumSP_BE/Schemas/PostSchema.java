@@ -37,13 +37,14 @@ public class PostSchema {
         this.author = author;
     }
 
-    public int getId() {return id;}
-    public String getTitle() {return title;}
-    public String getContent() {return content;}
-    public String getAuthor() {return author;}
-    public String getBelonging() {return space;}
-    public int getPosVotes() {return uppVotes;}
-    public int getNegVotes() {return downVotes;}
+    public int getId() {return this.id;}
+    public String getTitle() {return this.title;}
+    public String getContent() {return this.content;}
+    public String getAuthor() {return this.author;}
+    public String getBelonging() {return this.space;}
+    public int getPosVotes() {return this.uppVotes;}
+    public int getNegVotes() {return this.downVotes;}
+
     /** Return the difrence of all upp- and down- votes */
     public int controversy() {return uppVotes-downVotes;}
     /** Return the sum of all upp- and down- votes */
@@ -53,6 +54,7 @@ public class PostSchema {
     public void setContent(String content) {this.content = content;}
     public void setAuthor(String author) {this.author = author;}
     public void setBelonging(String space) {this.space = space;}
+
     /** add a upp-vote */
     public void like() {this.uppVotes++;}
     /** add a down-vote */

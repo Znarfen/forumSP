@@ -8,8 +8,6 @@ public class ForumSpBeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ForumSpBeApplication.class, args);
-
 		System.out.println("\nServer is running on http://localhost:8080");
 	}
-
 }

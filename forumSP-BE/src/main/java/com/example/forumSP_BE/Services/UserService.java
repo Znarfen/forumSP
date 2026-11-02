@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.forumSP_BE.Repositories.UserRepository;
-import com.example.forumSP_BE.Schemas.PostSchema;
+//import com.example.forumSP_BE.Schemas.PostSchema;
 import com.example.forumSP_BE.Schemas.UserSchema;
 import org.springframework.security.core.userdetails.User;
 
@@ -17,12 +17,12 @@ import org.springframework.http.ResponseEntity;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final PostSchema postSchema;
+    //private final PostSchema postSchema;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, PostSchema postSchema) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.postSchema = postSchema;
+        //this.postSchema = postSchema;
     }
 
     /** Register new user */
@@ -64,11 +64,10 @@ public class UserService implements UserDetailsService {
                 .password(user.getPassword())
                 .build();
     }
-
-    /** Remove (dis- and) like from user */
     
 
     /** Add a like to a post */
+    /* 
     public ResponseEntity addLike(String username, int postId, Boolean like) {
 
         UserSchema currentUser = userRepository.findByName(username)
@@ -81,8 +80,7 @@ public class UserService implements UserDetailsService {
         for (int[] i : new int[][] {liked, disliked}) {
             
         }
-
-
-        return ResponseEntity.ok("fuck you");
+        return ResponseEntity.ok("testing");
     }
+    */
 }

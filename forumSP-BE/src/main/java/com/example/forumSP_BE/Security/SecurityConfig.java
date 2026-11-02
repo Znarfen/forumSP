@@ -35,6 +35,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/getAllSpaces/names").permitAll()
                     .requestMatchers(HttpMethod.GET, "/{spaceName}/getPosts").permitAll()
                     .requestMatchers(HttpMethod.GET, "/{spaceName}").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/getSuggestedSpaces").permitAll()
 
                 .anyRequest().authenticated()
             )

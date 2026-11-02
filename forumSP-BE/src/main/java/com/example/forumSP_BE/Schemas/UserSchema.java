@@ -37,14 +37,16 @@ public class UserSchema {
 
     public UserSchema() {}
 
-    public Long getId() {return id;}
-    public String getName() {return name;}
-    public String getPassword() {return password;}
-    public int[] getLikedPosts() {return likedPosts;}
-    public int[] getDislikedPosts() {return dislikedPosts;}
+    public Long getId() {return this.id;}
+    public String getName() {return this.name;}
+    public String getPassword() {return this.password;}
+    public int[] getLikedPosts() {return this.likedPosts;}
+    public int[] getDislikedPosts() {return this.dislikedPosts;}
 
     public void setName(String name) {this.name = name;}
     public void setPassword(String password) {this.password = password;}
+    
+
     
     /** If like is set to true, will result in a like. If like is false, will result in a dislake.  */
     public void addVote(int postId, boolean like) {

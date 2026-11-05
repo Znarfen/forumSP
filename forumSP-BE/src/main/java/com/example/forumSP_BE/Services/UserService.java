@@ -64,6 +64,13 @@ public class UserService implements UserDetailsService {
                 .password(user.getPassword())
                 .build();
     }
+
+    /** Get userId from username */
+    public Long getId(String usernaem) {
+        return userRepository.findByName(usernaem)
+                .map(UserSchema::getId)
+                .orElse((long)-1);
+    }
     
 
     /** Add a like to a post */
@@ -83,4 +90,6 @@ public class UserService implements UserDetailsService {
         return ResponseEntity.ok("testing");
     }
     */
+
+    
 }

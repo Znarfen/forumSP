@@ -2,7 +2,6 @@ package com.example.forumSP_BE.Services;
 
 import com.example.forumSP_BE.Repositories.PostRepository;
 import com.example.forumSP_BE.Repositories.SpaceRepository;
-import com.example.forumSP_BE.Schemas.PostSchema;
 import com.example.forumSP_BE.Schemas.SpaceSchema;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +11,11 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
-
 @Service 
 public class SpaceService {
     private final SpaceRepository spaceRepository;
-    private final PostRepository postRepository;
-    public SpaceService(SpaceRepository spaceRepository, PostRepository postRepository) {
+    public SpaceService(SpaceRepository spaceRepository) {
         this.spaceRepository = spaceRepository;
-        this.postRepository = postRepository;
     }
 
     /** Create a new space */
@@ -36,7 +31,7 @@ public class SpaceService {
         com.example.forumSP_BE.Schemas.SpaceSchema newSpace = new com.example.forumSP_BE.Schemas.SpaceSchema();
         newSpace.setName(name.toLowerCase());
         newSpace.setDescription(description);
-        newSpace.setOwner(owner);
+        newSpace.setAdmin(owner);
         newSpace.setTags(tags);
         
         spaceRepository.save(newSpace);
@@ -63,45 +58,9 @@ public class SpaceService {
                 .toArray(String[]::new);
     }
 
-    /** Create a new post, space needs to exist. */
-    public ResponseEntity createPost(String title, String content, String creator, String spaceName) {
-        
-        PostSchema newPost = new PostSchema();
-        SpaceSchema space = getSpace(spaceName);
-        if (space == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No space with name " + spaceName + " exists.");
-        
-        // Form the post
-        newPost.setTitle(title);
-        newPost.setContent(content);
-        newPost.setAuthor(creator);
-        postRepository.save(newPost);
-
-        // Save to space
-        space.addPost(newPost.getId());
-        spaceRepository.save(space);
-
-        return ResponseEntity.ok("Post created successfully!");
-    }
-
-    /** Gett all posts from a space */
-    public ResponseEntity getPosts(String spaceName) {
-
-        SpaceSchema space = getSpace(spaceName);
-        if (space == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No space with name " + spaceName + " exists.");
-
-        List<PostSchema> posts = new ArrayList<>();
-
-        for (int postId : space.getPosts()) {
-            PostSchema post = postRepository.findById(postId).orElse(null);
-            if (post != null) posts.add(post);
-        }
-
-        return ResponseEntity.ok(posts);
-    }
-
-    /** From a description returns a list of fitting spaces */
+    /** From a description returns a list of fitting spaces (where the firs one has the best match). */
     public ResponseEntity getMatchingSpaces(String description) {
-        System.out.println("Searching for spaces matching description: " + description);
+        // System.out.println("Searching for spaces matching description: " + description);
 
         List<SpaceSchema> spaces = spaceRepository.findAll();
         List<Map<String, Object>> finalList = new ArrayList<>();
@@ -118,8 +77,6 @@ public class SpaceService {
                 if (desc.contains(tag)) points[i]++;
             }
         }
-
-        System.out.println("Points: " + points[0]);
 
         // If no space do not have any points, return a not found
         int max = 0;
@@ -145,12 +102,40 @@ public class SpaceService {
         for (int i = 0; i < points.length; i++) {
             score = (float) points[i] / (float) maxPoints[i];
             if (score > 0.2f) {
-                finalList.add(Map.of("space", spaces.get(i), "points", points[i], "maxPoints", maxPoints[i], "score", score));
+                finalList.add(Map.of("space", spaces.get(i), ".points", points[i], ".maxPoints", maxPoints[i], ".score", score));
             }
         }
         
         // Return final list with points
         if (finalList.isEmpty()) return ResponseEntity.ok(spaces.get(0)); 
         return ResponseEntity.ok(finalList);
+    }
+
+    /** Link a post to a space */
+    public ResponseEntity linkPost(Long postId, String spaceName) {
+        SpaceSchema space = getSpace(spaceName);
+        if (space == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Space, '" + spaceName + "' not found!");
+        space.addPost(postId);
+        spaceRepository.save(space);
+        return ResponseEntity.ok("Post added to space '" + spaceName + "' successfully!");
+    }
+
+    /** Get all posts from a space */
+    public ResponseEntity getPosts(String spaceName) {
+        var space = spaceRepository.findAll().stream()
+                .filter(s -> s.getName().equals(spaceName.toLowerCase()))
+                .findFirst()
+                .orElse(null);
+        if (space == null) {
+            return ResponseEntity.notFound().build();
+        }
+        /* 
+        var posts = postRepository.findAll().stream()
+                .filter(p -> p.getBelonging().equals(spaceName.toLowerCase()))
+                .toList();
+        return ResponseEntity.ok(posts);
+        */
+
+        return ResponseEntity.ok("");
     }
 }

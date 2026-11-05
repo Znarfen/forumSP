@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 public class PostSchema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotBlank (message = "Title is required")
     private String title;
@@ -37,7 +37,7 @@ public class PostSchema {
         this.author = author;
     }
 
-    public int getId() {return this.id;}
+    public Long getId() {return this.id;}
     public String getTitle() {return this.title;}
     public String getContent() {return this.content;}
     public String getAuthor() {return this.author;}

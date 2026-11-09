@@ -57,6 +57,7 @@ public class SpaceSchema {
      * @param p (postion)
      * @return The post that is on that position.
      */
+
     public Long getPost(int p) {return this.postsId[p];}
     
     public void setName(String name) {this.name = name;}

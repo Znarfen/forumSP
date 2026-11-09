@@ -20,6 +20,4 @@ public class PostControler {
     private final PostService postService;
 
     public PostControler(PostService postService) {this.postService = postService;}
-
-
 }

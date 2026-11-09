@@ -65,21 +65,47 @@ public class SpaceService {
         List<SpaceSchema> spaces = spaceRepository.findAll();
         List<Map<String, Object>> finalList = new ArrayList<>();
 
-        String desc = description.toLowerCase();
+        String desc = ' ' + description.toLowerCase() + '\0';
         int[] points = new int[spaceRepository.findAll().size()];
         int[] maxPoints = new int[spaceRepository.findAll().size()];
         float score = 0.00f;
+        
+        int max = 0;
+        
+        String word;
+        int dIndex;
+        boolean repeat;
+        boolean check;
 
         // Determinate points for each space based on tags
         for (int i = 0; i < spaces.size(); i++) {
             for (String tag : spaces.get(i).getTags()) {
                 maxPoints[i]++;
-                if (desc.contains(tag)) points[i]++;
+                
+                // if (desc.contains(tag)) points[i]++; <- I do this but kinda not.
+                repeat = false;
+                dIndex = 0;
+                while (desc.charAt((dIndex++)+tag.length()) != '\0') {
+                    word = "";
+                    check = true;
+                    for (int j = 0; j < tag.length(); j++) {
+                        if (desc.charAt(dIndex + j) != tag.charAt(j)) {
+                            check = false;
+                            continue;
+                        }
+                        word += desc.charAt(dIndex + j);
+                    }
+                    if (check) {
+                        points[i]++;    
+                        if (repeat) maxPoints[i]++;
+                        repeat = true;
+                    }
+                    //System.out.println("check: " + word + "\t match: " + tag + "\t points: " + points[i]);
+                }
             }
         }
 
         // If no space do not have any points, return a not found
-        int max = 0;
         for (int i : points) if (i > max) max = i;
         if (max == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No fitting space was found for your post.");
 
@@ -137,5 +163,7 @@ public class SpaceService {
         */
 
         return ResponseEntity.ok("");
+
+
     }
 }

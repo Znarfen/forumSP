@@ -37,19 +37,19 @@ public class SpaceControler {
         return spaceService.createSpace(body.get("name").asString(), body.get("description").asString(), tags, principal.getName());
     }
 
-    @GetMapping("/getAllSpaces")
-    public Iterable<com.example.forumSP_BE.Schemas.SpaceSchema> getAllSpaces() {
-        return spaceService.getSpace();
+    @GetMapping("/spaces")
+    public ResponseEntity getAllSpaces() {
+        return spaceService.getSpaces();
     }
 
-    @GetMapping ("/getAllSpaces/names")
-    public String[] getAllSpacesNames() {
+    @GetMapping ("/spaces/names")
+    public ResponseEntity getAllSpacesNames() {
         return spaceService.getSpacesNames();
     }
 
     @GetMapping ("/{spaceName}")
-    public com.example.forumSP_BE.Schemas.SpaceSchema getSpace(@PathVariable String spaceName) {
-        return spaceService.getSpace(spaceName);
+    public ResponseEntity getSpace(@PathVariable String spaceName) {
+        return spaceService.getSpaceName(spaceName);
     }
 
     @GetMapping ("/getSuggestedSpaces")

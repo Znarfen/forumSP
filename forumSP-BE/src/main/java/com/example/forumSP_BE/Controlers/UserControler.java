@@ -23,7 +23,7 @@ public class UserControler {
         return userService.registerUser(user.getName(), user.getPassword());
     }
 
-    @GetMapping("/users")
+    @GetMapping("/user")
     public Iterable<UserSchema> getUsers(Principal principal) {
         return userService.getUsers(principal.getName());
     }

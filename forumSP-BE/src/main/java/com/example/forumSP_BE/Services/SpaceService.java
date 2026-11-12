@@ -39,7 +39,7 @@ public class SpaceService {
     }
 
     /** Get all spaces */
-    public Iterable<SpaceSchema> getSpace() {
+    private Iterable<SpaceSchema> getSpace() {
         return spaceRepository.findAll();
     }
 
@@ -51,11 +51,26 @@ public class SpaceService {
                 .orElse(null);
     }
 
+    /** Get a specific space by name as responce */
+    public ResponseEntity getSpaceName(String name) {
+        SpaceSchema space = getSpace(name);
+        if (space == null) ResponseEntity.status(HttpStatus.NOT_FOUND).body("Space ith name '" + name + "' could not be found!");
+        return ResponseEntity.ok(space);
+    }
+    
+    /** Get all spaces as response */
+    public ResponseEntity getSpaces() {
+        if (!getSpace().iterator().hasNext()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No spaces exist!");
+        return ResponseEntity.ok(getSpace());
+    }
+
     /** Get all space names */
-    public String[] getSpacesNames() {
-        return spaceRepository.findAll().stream()
+    public ResponseEntity getSpacesNames() {
+        String[] names = spaceRepository.findAll().stream()
                 .map(SpaceSchema::getName)
                 .toArray(String[]::new);
+        if (names.length == 0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No spaces exist!");
+        return ResponseEntity.ok(names);
     }
 
     /** From a description returns a list of fitting spaces (where the firs one has the best match). */

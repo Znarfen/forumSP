@@ -26,7 +26,7 @@ public class SecurityConfig {
 
                     // users
                     .requestMatchers(HttpMethod.POST, "/register").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/users").fullyAuthenticated()
+                    .requestMatchers(HttpMethod.GET, "/user").fullyAuthenticated()
 
                     // spaces
                     .requestMatchers(HttpMethod.POST, "/addSpace").fullyAuthenticated()
